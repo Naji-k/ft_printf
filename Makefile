@@ -19,7 +19,8 @@ FLAGS = -Wall -Wextra -Werror
 
 MAKE = make
 
-SRC = main.c
+SRC = main.c \
+	ft_itoa_base.c
 
 OBJS = ${SRC:.c=.o}
 
