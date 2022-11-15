@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
+# include "libft/libft.h"
 #include <stdio.h>
 #include <string.h>
 
-static void	converter(unsigned int num, char *base_table, int base_system)
+static void	converter(unsigned long num, char *base_table, unsigned long base_system)
 {
 	if (num >= base_system)
 	{
@@ -25,19 +26,13 @@ static void	converter(unsigned int num, char *base_table, int base_system)
 		ft_putchar_fd(base_table[num], 1);
 }
 
-void	ft_itoa_base(int num, char *base_table)
+void	ft_itoa_base(unsigned long num, char *base_table)
 {
-	int		base_system;
-	unsigned int	nb;
-
-	nb = num;
+	unsigned long		base_system;
+	// unsigned int	nb;
+	// nb = num;
 	base_system = strlen(base_table);
-	// if (num < 0)
-	// {
-	// 	nb *= -1;
-	// 	ft_putchar_fd('-', 1);
-	// }
-	converter(nb, base_table, base_system);
+	converter(num, base_table, base_system);
 }
 
 /* int	main(void)
