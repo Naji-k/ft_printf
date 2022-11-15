@@ -17,7 +17,12 @@ int	ft_printf(const char *HOLDER, ...)
 {
 	int		x;
 	va_list	args;
+	char	*hexa;
+	char	*HEXA;
+	int		num;
 
+	hexa = "0123456789abcdef";
+	HEXA = "0123456789ABCDEF";
 	x = 0;
 	va_start(args, HOLDER);
 	while (*HOLDER)
@@ -45,6 +50,18 @@ int	ft_printf(const char *HOLDER, ...)
 			case 'd':
 				ft_putnbr_fd(va_arg(args, int), 1);
 				break ;
+			case 'x':
+				num = va_arg(args, int);
+				ft_itoa_base(num, hexa);
+				break ;
+			case 'X':
+				num = va_arg(args, int);
+				ft_itoa_base(num, HEXA);
+			case 'p':
+				num = va_arg(args, int);
+				ft_putstr_fd("0x7ff7", 1);
+				ft_itoa_base(num, hexa);
+				break ;
 			default:
 				break ;
 			}
@@ -54,50 +71,10 @@ int	ft_printf(const char *HOLDER, ...)
 	va_end(args);
 	return (0);
 }
-static int	nbr_len(int n)
-{
-	int	i;
-	int	sign;
-
-	sign = 0;
-	i = 0;
-	if (n <= 0)
-		sign += 1;
-	while (n)
-	{
-		n = n / 10;
-		i++;
-	}
-}
-static void	converter(long num, int base, char *base_table)
-{
-	if (num > base_system)
-	{
-		converter((num / base), base, base_table);
-		converter((num % base), base, base_table);
-	}
-	else if (num < base)
-	{
-		
-		write(1, &num, 1);
-	}
-}
-int	ft_putnbr_base(int nbr, char *base)
-{
-	int	base_system;
-	int	str_len;
-
-	base_system = ft_strlen(base);
-	if (nbr == 0)
-		write(1, "0", 1);
-	converter(nbr, base_system, base);
-	// str_len = nbr_len(nbr);
-	return (0);
-}
 
 int	main(void)
 {
-	int s = 2;
-	printf("%x", -1234);
-	// ft_printf("%d", 0001);
+	char* s = "geet";
+	printf("%p\n", &s);
+	ft_printf("%p", &s);
 }

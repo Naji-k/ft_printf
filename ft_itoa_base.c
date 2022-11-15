@@ -11,64 +11,42 @@
 /* ************************************************************************** */
 
 #include "libftprintf.h"
+#include <stdio.h>
 #include <string.h>
 
-static int	num_len(int n)
+static void	converter(unsigned int num, char *base_table, int base_system)
 {
-	int	i;
-	int	sign;
-
-	i = 0;
-	sign = 0;
-	if (n <= 0)
-		sign += 1;
-	while (n)
+	if (num >= base_system)
 	{
-		n = n / 10;
-		i++;
+		converter((num / base_system), base_table, base_system);
+		converter((num % base_system), base_table, base_system);
 	}
-	return (i + sign);
+	if (num < base_system)
+		ft_putchar_fd(base_table[num], 1);
 }
-
-/* static void	converter(int num, char *base_table, char *str,int index)
-{
-	if (num == 0)
-		str[index] = '0';
-	if (num > 9)
-	{
-		recursive(str, (num / 10), index - 1);
-		recursive(str, (num % 10), (index));
-	}
-	else if (num <= 9)
-	{
-		str[index] = num + '0';
-		num = num / 10;
-	}
-} */
 
 void	ft_itoa_base(int num, char *base_table)
 {
-	int	base_system;
-	int	nem_len;
+	int		base_system;
+	unsigned int	nb;
 
-	nem_len = num_len(num);
+	nb = num;
 	base_system = strlen(base_table);
-	if (num >= base_system)
-	{
-		ft_itoa_base((num / base_system), base_table);
-		ft_itoa_base((num % base_system), base_table);
-	}
-	// else if (num > 0)
-	else if (num == 0)
-	{
+	// if (num < 0)
+	// {
+	// 	nb *= -1;
+	// 	ft_putchar_fd('-', 1);
+	// }
+	converter(nb, base_table, base_system);
+}
 
-		write(1,"0",1);
-	}
-	write(1, &base_table[num], 1);
-}
-int	main(void)
+/* int	main(void)
 {
-	char *hexa_base = "0123456789ABCDEF";
-	char *base_10 = "0123456789";
-	ft_itoa_base(2147483647, base_10);
+	char	*hexa_base;
+	char	*base_10;
+
+	hexa_base = "0123456789ABCDEF";
+	base_10 = "0123456789";
+	ft_itoa_base(-2147483648, base_10);
 }
+ */

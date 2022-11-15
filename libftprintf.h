@@ -17,6 +17,7 @@
 # include <stdarg.h>
 # include <unistd.h>
 
-int	ft_printf(const char *, ...);
+int		ft_printf(const char *, ...);
+void	ft_itoa_base(int num, char *base_table);
 
 #endif
