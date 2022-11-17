@@ -12,6 +12,7 @@
 
 #include "ft_printf.h"
 #include "libft/libft.h"
+#include <limits.h>
 #include <stdio.h>
 
 int	ft_printf(const char *HOLDER, ...)
@@ -23,6 +24,7 @@ int	ft_printf(const char *HOLDER, ...)
 	int		num;
 	void	*adrss;
 	char	c;
+	char	*str;
 
 	hexa = "0123456789abcdef";
 	HEXA = "0123456789ABCDEF";
@@ -32,7 +34,6 @@ int	ft_printf(const char *HOLDER, ...)
 	{
 		if (*HOLDER == '%')
 		{
-			// 	// x++;
 			HOLDER++;
 			if (*HOLDER == 'c')
 			{
@@ -42,50 +43,60 @@ int	ft_printf(const char *HOLDER, ...)
 			}
 			else if (*HOLDER == 's')
 			{
-				hexa = va_arg(args, char *);
-				ft_putstr_fd(hexa, 1);
-				x = ft_strlen(hexa);
+				str = va_arg(args, char *);
+				ft_putstr_fd(str, 1);
+				x += ft_strlen(str);
 			}
 			else if (*HOLDER == 'i' || *HOLDER == 'd')
 			{
 				num = va_arg(args, int);
 				ft_putnbr_fd(num, 1);
-				x++;
+				x += nbr_len(num, 10);
 			}
 			else if (*HOLDER == 'x')
 			{
 				num = va_arg(args, int);
-				ft_itoa_base(num, hexa);
+				x += ft_itoa_base(num, hexa);
 			}
 			else if (*HOLDER == 'X')
 			{
 				num = va_arg(args, int);
 				ft_itoa_base(num, HEXA);
+				x += nbr_len(num, 16);
 			}
 			else if (*HOLDER == 'p')
 			{
 				adrss = va_arg(args, void *);
 				ft_putstr_fd("0x", 1);
-				ft_itoa_base((unsigned long)adrss, hexa);
+				x += ft_itoa_base((unsigned long)adrss, hexa) + 2;
+			}
+			else if (*HOLDER == '%')
+			{
+				write(1, "%", 1);
+				x++;
 			}
 		}
 		else if (*HOLDER != '%' && *HOLDER != '\0')
 		{
-			write(1, HOLDER, 1);
 			x++;
+			write(1, HOLDER, 1);
 		}
 		HOLDER++;
+		// printf("\nx=%d\n",x);
+		// x++;
 	}
 	va_end(args);
 	return (x);
 }
 
-int	main(void)
+/* int	main(void)
 {
 	// ft_printf("%s %s ", "1", "2");
 	// printf("\n%s %s ", "1", "2");
 	// printf("\n %c %c %c ", '0', 0, '1');
 	// printf("\n %c ", '0' + 256);
-	printf("\t%d", printf("%d  ", 123));
-	printf("\t%d", ft_printf("%d  ", 123));
+	printf("\t%d", printf(" %d ", 0));
+	printf("\n----me----\n");
+	printf("\t%d", ft_printf(" %d ", 0));
 }
+ */

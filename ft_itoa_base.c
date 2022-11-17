@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# include "libft/libft.h"
+#include "libft/libft.h"
 #include <stdio.h>
 #include <string.h>
 
-static void	converter(unsigned long num, char *base_table, unsigned long base_system)
+static int	converter(unsigned int num, char *base_table,
+		unsigned int base_system)
 {
 	if (num >= base_system)
 	{
@@ -23,16 +24,35 @@ static void	converter(unsigned long num, char *base_table, unsigned long base_sy
 		converter((num % base_system), base_table, base_system);
 	}
 	if (num < base_system)
+	{
 		ft_putchar_fd(base_table[num], 1);
+	}
+	return (nbr_len(num, base_system));
 }
 
-void	ft_itoa_base(unsigned long num, char *base_table)
+int	ft_itoa_base(int num, char *base_table)
 {
-	unsigned long		base_system;
-	// unsigned int	nb;
-	// nb = num;
+	unsigned int	base_system;
+	int				x;
+
+	x = 0;
 	base_system = strlen(base_table);
-	converter(num, base_table, base_system);
+	x = converter(num, base_table, base_system);
+	return (x);
+}
+int	nbr_len(unsigned int num, int base_system)
+{
+	int	i;
+
+	i = 0;
+	while (num)
+	{
+		num = num / base_system;
+		i++;
+	}
+	// if (num <= 0)
+	// 	i++;
+	return (i);
 }
 
 /* int	main(void)
@@ -42,6 +62,6 @@ void	ft_itoa_base(unsigned long num, char *base_table)
 
 	hexa_base = "0123456789ABCDEF";
 	base_10 = "0123456789";
-	ft_itoa_base(-2147483648, base_10);
-}
- */
+	ft_itoa_base(-1, hexa_base);
+	printf("\t%d", printf("\n%x", -1));
+} */
