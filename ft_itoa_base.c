@@ -11,11 +11,9 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 #include <stdio.h>
-#include <string.h>
 
-static int	converter(unsigned int num, char *base_table,
+static int	converter(unsigned long num, char *base_table,
 		unsigned int base_system)
 {
 	if (num >= base_system)
@@ -30,28 +28,29 @@ static int	converter(unsigned int num, char *base_table,
 	return (nbr_len(num, base_system));
 }
 
-int	ft_itoa_base(int num, char *base_table)
+int	ft_itoa_base(unsigned long num, char *base_table)
 {
 	unsigned int	base_system;
 	int				x;
 
 	x = 0;
-	base_system = strlen(base_table);
+	base_system = ft_strlen(base_table);
 	x = converter(num, base_table, base_system);
 	return (x);
 }
-int	nbr_len(unsigned int num, int base_system)
+
+int	nbr_len(unsigned long num, int base_system)
 {
 	int	i;
 
 	i = 0;
+	if (num <= 0)
+		i++;
 	while (num)
 	{
 		num = num / base_system;
 		i++;
 	}
-	// if (num <= 0)
-	// 	i++;
 	return (i);
 }
 

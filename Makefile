@@ -19,13 +19,12 @@ FLAGS = -Wall -Wextra -Werror
 
 MAKE = make
 
-SRC = $(wildcard *.c */*.c)
-# main.c \
-# 	ft_itoa_base.c \
-# 	ft_putchar_fd.c \
-# 	ft_putstr_fd.c \
-# 	ft_putnbr_fd.c \
-	
+SRC = main.c \
+	ft_itoa_base.c \
+	ft_printf_utilities.c \
+	libft/ft_strlen.c \
+	libft/ft_putchar_fd.c\
+	libft/ft_putstr_fd.c \
 
 
 OBJS = ${SRC:.c=.o}
@@ -34,6 +33,7 @@ OBJS = ${SRC:.c=.o}
 all: ${NAME}
 
 ${NAME}:	${OBJS}
+	cd libft && $(MAKE)
 	${AR} -crs ${NAME} ${OBJS}
 
 %.o : %.c

@@ -11,92 +11,63 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
-#include <limits.h>
-#include <stdio.h>
 
-int	ft_printf(const char *HOLDER, ...)
+
+int	ft_printf(const char *holder, ...)
 {
 	int		x;
 	va_list	args;
 	char	*hexa;
-	char	*HEXA;
-	int		num;
-	void	*adrss;
-	char	c;
-	char	*str;
+	char	*hexa_upper;
 
 	hexa = "0123456789abcdef";
-	HEXA = "0123456789ABCDEF";
+	hexa_upper = "0123456789ABCDEF";
 	x = 0;
-	va_start(args, HOLDER);
-	while (*HOLDER != '\0')
+	va_start(args, holder);
+	while (*holder != '\0')
 	{
-		if (*HOLDER == '%')
+		if (*holder == '%')
 		{
-			HOLDER++;
-			if (*HOLDER == 'c')
-			{
-				c = va_arg(args, int);
-				ft_putchar_fd(c, 1);
-				x++;
-			}
-			else if (*HOLDER == 's')
-			{
-				str = va_arg(args, char *);
-				ft_putstr_fd(str, 1);
-				x += ft_strlen(str);
-			}
-			else if (*HOLDER == 'i' || *HOLDER == 'd')
-			{
-				num = va_arg(args, int);
-				ft_putnbr_fd(num, 1);
-				x += nbr_len(num, 10);
-			}
-			else if (*HOLDER == 'x')
-			{
-				num = va_arg(args, int);
-				x += ft_itoa_base(num, hexa);
-			}
-			else if (*HOLDER == 'X')
-			{
-				num = va_arg(args, int);
-				ft_itoa_base(num, HEXA);
-				x += nbr_len(num, 16);
-			}
-			else if (*HOLDER == 'p')
-			{
-				adrss = va_arg(args, void *);
-				ft_putstr_fd("0x", 1);
-				x += ft_itoa_base((unsigned long)adrss, hexa) + 2;
-			}
-			else if (*HOLDER == '%')
+			holder++;
+			if (*holder == 'c')
+				x = print_char(x, va_arg(args, int));
+			else if (*holder == 's')
+				x += print_string(va_arg(args, char *));
+			else if (*holder == 'i' || *holder == 'd')
+				x += print_dec(va_arg(args, int));
+			else if (*holder == 'x')
+				x += ft_itoa_base((unsigned int)va_arg(args, int), hexa);
+			else if (*holder == 'X')
+				x += ft_itoa_base((unsigned int)va_arg(args, int), hexa_upper);
+			else if (*holder == 'p')
+				x += print_pointer((unsigned long)va_arg(args, void *));
+			else if (*holder == 'u')
+				x += ft_itoa_base(va_arg(args, unsigned int), "0123456789");
+			else if (*holder == '%')
 			{
 				write(1, "%", 1);
 				x++;
 			}
 		}
-		else if (*HOLDER != '%' && *HOLDER != '\0')
+		else if (*holder != '%' && *holder != '\0')
 		{
 			x++;
-			write(1, HOLDER, 1);
+			write(1, holder, 1);
 		}
-		HOLDER++;
-		// printf("\nx=%d\n",x);
-		// x++;
+		holder++;
 	}
 	va_end(args);
 	return (x);
 }
-
-/* int	main(void)
+/* 
+int	main(void)
 {
+	char s = 's';
 	// ft_printf("%s %s ", "1", "2");
 	// printf("\n%s %s ", "1", "2");
 	// printf("\n %c %c %c ", '0', 0, '1');
 	// printf("\n %c ", '0' + 256);
-	printf("\t%d", printf(" %d ", 0));
+	printf("\t%d", printf("%s", "hello"));
 	printf("\n----me----\n");
-	printf("\t%d", ft_printf(" %d ", 0));
-}
- */
+	printf("\t%d", ft_printf("%s", "hello"));
+} */

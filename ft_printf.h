@@ -17,8 +17,12 @@
 # include <stdarg.h>
 # include <unistd.h>
 
-int	ft_printf(const char *, ...);
-int	ft_itoa_base(int num, char *base_table);
-int	nbr_len(unsigned int num, int base_system);
+int	ft_printf(const char *holder, ...);
+int	ft_itoa_base(unsigned long num, char *base_table);
+int	nbr_len(unsigned long num, int base_system);
+int	print_char(int x, char param);
+int	print_string(char *param);
+int	print_dec(int num);
+int	print_pointer(unsigned long address);
 
 #endif
