@@ -12,42 +12,27 @@
 
 #include "ft_printf.h"
 
-int	print_char(int x, char param)
+int	print_char(va_list args)
 {
+	int	param;
+
+	param = va_arg(args, int);
 	ft_putchar_fd(param, 1);
-	x++;
-	return (x);
+	return (1);
 }
 
-int	print_string(char *param)
+int	print_string(va_list args)
 {
 	char	*str;
 
-	str = param;
+	str = va_arg(args, char *);
 	if (!str)
 		str = "(null)";
 	ft_putstr_fd(str, 1);
 	return (ft_strlen(str));
 }
 
-int	print_dec(int num)
-{
-	char	*base_10;
-	int		x;
-
-	base_10 = "0123456789";
-	x = 0;
-	if (num < 0)
-	{
-		num *= -1;
-		write(1, "-", 1);
-		x++;
-	}
-	x += ft_itoa_base((unsigned int)num, base_10);
-	return (x);
-}
-
-int	print_pointer(unsigned long address)
+int	print_pointer(va_list args)
 {
 	int		x;
 	char	*hexa;
@@ -55,6 +40,28 @@ int	print_pointer(unsigned long address)
 	x = 0;
 	hexa = "0123456789abcdef";
 	ft_putstr_fd("0x", 1);
-	x += ft_itoa_base(address, hexa) + 2;
+	x += ft_itoa_base((unsigned long)va_arg(args, void *), hexa) + 2;
+	return (x);
+}
+
+int	print_hexa(va_list args)
+{
+	char	*hexa;
+	int		x;
+
+	x = 0;
+	hexa = "0123456789abcdef";
+	x += ft_itoa_base((unsigned int)va_arg(args, int), hexa);
+	return (x);
+}
+
+int	print_hexa_upper(va_list args)
+{
+	char	*hexa;
+	int		x;
+
+	x = 0;
+	hexa = "0123456789ABCDEF";
+	x += ft_itoa_base((unsigned int)va_arg(args, int), hexa);
 	return (x);
 }

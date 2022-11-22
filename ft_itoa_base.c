@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 static int	converter(unsigned long num, char *base_table,
 		unsigned int base_system)

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_printf.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nakanoun <nakanoun@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -12,58 +12,56 @@
 
 #include "ft_printf.h"
 
-
 int	ft_printf(const char *holder, ...)
 {
-	int		x;
+	int		p_counter;
 	va_list	args;
-	char	*hexa;
-	char	*hexa_upper;
 
-	hexa = "0123456789abcdef";
-	hexa_upper = "0123456789ABCDEF";
-	x = 0;
+	p_counter = 0;
 	va_start(args, holder);
 	while (*holder != '\0')
 	{
 		if (*holder == '%')
 		{
 			holder++;
-			if (*holder == 'c')
-				x = print_char(x, va_arg(args, int));
-			else if (*holder == 's')
-				x += print_string(va_arg(args, char *));
-			else if (*holder == 'i' || *holder == 'd')
-				x += print_dec(va_arg(args, int));
-			else if (*holder == 'x')
-				x += ft_itoa_base((unsigned int)va_arg(args, int), hexa);
-			else if (*holder == 'X')
-				x += ft_itoa_base((unsigned int)va_arg(args, int), hexa_upper);
-			else if (*holder == 'p')
-				x += print_pointer((unsigned long)va_arg(args, void *));
-			else if (*holder == 'u')
-				x += ft_itoa_base(va_arg(args, unsigned int), "0123456789");
-			else if (*holder == '%')
-			{
-				write(1, "%", 1);
-				x++;
-			}
+			p_counter += check_print_table(holder, args);
 		}
 		else if (*holder != '%' && *holder != '\0')
 		{
-			x++;
+			p_counter++;
 			write(1, holder, 1);
 		}
 		holder++;
 	}
 	va_end(args);
+	return (p_counter);
+}
+
+int	check_print_table(const char *holder, va_list args)
+{
+	static const t_print_fns_list	fn_list[256] = {
+	['c'] = print_char,
+	['s'] = print_string,
+	['d'] = print_dec,
+	['i'] = print_dec,
+	['p'] = print_pointer,
+	['x'] = print_hexa,
+	['X'] = print_hexa_upper,
+	['u'] = print_unsigned,
+	};
+	int								x;
+
+	x = 0;
+	if (fn_list[(int)*holder])
+		x += fn_list[(int)*holder](args);
+	else if (*holder == '%')
+		x += print_persentage();
 	return (x);
 }
-/* 
-int	main(void)
+/* int	main(void)
 {
 	char s = 's';
-	// ft_printf("%s %s ", "1", "2");
+	// ft_printf("%s %s + 256 ", "1", "2");
 	// printf("\n%s %s ", "1", "2");
 	// printf("\n %c %c %c ", '0', 0, '1');
 	// printf("\n %c ", '0' + 256);
