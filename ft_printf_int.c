@@ -42,7 +42,7 @@ int	print_unsigned(va_list args)
 	return (x);
 }
 
-int	print_persentage(void)
+int	print_percentage(void)
 {
 	int	x;
 

@@ -29,7 +29,7 @@ int			print_pointer(va_list args);
 int			print_hexa(va_list args);
 int			print_hexa_upper(va_list args);
 int			print_unsigned(va_list args);
-int			print_persentage(void);
+int			print_percentage(void);
 int			check_print_table(const char *holder, va_list args);
 
 #endif

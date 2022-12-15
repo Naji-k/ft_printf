@@ -55,7 +55,7 @@ int	check_print_table(const char *holder, va_list args)
 	if (fn_list[(int)*holder])
 		x += fn_list[(int)*holder](args);
 	else if (*holder == '%')
-		x += print_persentage();
+		x += print_percentage();
 	return (x);
 }
 /* int	main(void)

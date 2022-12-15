@@ -23,9 +23,7 @@ SRC = ft_printf.c \
 	ft_itoa_base.c \
 	ft_printf_utilities.c \
 	ft_printf_int.c \
-	libft/ft_strlen.c \
-	libft/ft_putchar_fd.c\
-	libft/ft_putstr_fd.c \
+
 
 
 OBJS = ${SRC:.c=.o}
@@ -35,6 +33,7 @@ all: ${NAME}
 
 ${NAME}:	${OBJS}
 	cd libft && $(MAKE)
+	cp libft/libft.a $(NAME)
 	${AR} -crs ${NAME} ${OBJS}
 
 %.o : %.c
