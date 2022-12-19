@@ -24,7 +24,10 @@ int	ft_printf(const char *holder, ...)
 		if (*holder == '%')
 		{
 			holder++;
-			p_counter += check_print_table(holder, args);
+			if (*holder != '\0')
+				p_counter += check_print_table(holder, args);
+			else
+				break ;
 		}
 		else if (*holder != '%' && *holder != '\0')
 		{
@@ -56,16 +59,24 @@ int	check_print_table(const char *holder, va_list args)
 		x += fn_list[(int)*holder](args);
 	else if (*holder == '%')
 		x += print_percentage();
+	else if (*holder != '%' && *holder != '\0')
+	{
+		x++;
+		write(1, holder, 1);
+	}
 	return (x);
 }
-/* int	main(void)
+/* #include<stdio.h>
+int	main(void)
 {
-	char s = 's';
+	// char s = 's';
 	// ft_printf("%s %s + 256 ", "1", "2");
 	// printf("\n%s %s ", "1", "2");
 	// printf("\n %c %c %c ", '0', 0, '1');
 	// printf("\n %c ", '0' + 256);
-	printf("\t%d", printf("%s", "hello"));
-	printf("\n----me----\n");
-	printf("\t%d", ft_printf("%s", "hello"));
+	// printf("\t%d", printf("a \0ba"));
+	// printf("\n----me----\n");
+	printf("ori=%d\n", printf("%%% \\0ba\n"));
+	printf("me=%d\n", ft_printf("%%% \\0ba\n"));
+	// printf("\t%d", ft_printf("%%%randomdata"));
 } */
