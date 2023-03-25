@@ -11,41 +11,46 @@
 # **************************************************************************** #
 
 NAME = libftprintf.a
+#Lib
+LIB_LIBFT = $(LIBFT_DIR)/libft.a
 
 AR = ar
 CC = cc
 
+INCLUDE = -Iinclude -Ilibft
+# Directories
+LIBFT_DIR = ./libft
+OBJ_DIR = obj
+
 FLAGS = -Wall -Wextra -Werror
 
-MAKE = make
-
-SRC = ft_printf.c \
+FILES = ft_printf.c \
 	ft_itoa_base.c \
 	ft_printf_utilities.c \
 	ft_printf_int.c \
 
-
-
-OBJS = ${SRC:.c=.o}
-
+SRC = $(addprefix src/, $(FILES))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 all: ${NAME}
 
-${NAME}:	${OBJS}
-	cd libft && $(MAKE)
-	cp libft/libft.a $(NAME)
-	${AR} -crs ${NAME} ${OBJS}
+${NAME}:	$(LIB_LIBFT) ${OBJS}
+	cp $(LIB_LIBFT) $(NAME)
+	${AR} rcs ${NAME} ${OBJS}
 
-%.o : %.c
-	$(CC) $(FLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o : %.c
+		@mkdir -p $(@D)
+		$(CC) $(FLAGS) $(INCLUDE) -c $< -o $@
+
+$(LIB_LIBFT):
+	@make -C $(LIBFT_DIR)
 
 clean: 
-	rm -f $(OBJS);
-	cd libft && $(MAKE) clean
+	rm -rf $(OBJ_DIR);
+	@make clean -C $(LIBFT_DIR)
 
 fclean:	clean
-	rm -f $(NAME) a.out
-	cd libft && $(MAKE) fclean
-
+	rm -f $(NAME)
+	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
